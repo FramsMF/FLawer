@@ -2,155 +2,168 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Семецветик на фоне</title>
+  <title>Цветок</title>
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      /* Fallback градиент фон */
-      background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-      font-family: Arial, sans-serif;
-      position: relative;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
     }
 
-    /* Если есть фон.jpg — раскомментируйте */
-    /*
-    body {
-      background-image: url("фон.jpg");
-      background-size: cover;
-      background-position: center;
-    }
-    */
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    button {
-      padding: 15px 30px;
-      font-size: 20px;
-      background: rgba(255,255,255,0.95);
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: bold;
+    .container {
+      text-align: center;
       z-index: 10;
-      transition: all 0.2s;
       position: relative;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
-    button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    .btn {
+      padding: 18px 40px;
+      font-size: 22px;
+      background: rgba(255,255,255,0.92);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 700;
+      color: #5a67d8;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      position: relative;
     }
 
-    button:active {
+    .btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+
+    .btn:active {
       transform: scale(0.98);
     }
 
-    #flower {
-      position: absolute;
+    .flower {
+      position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
-      width: 120px;
-      height: 120px;
-      /* Fallback SVG цветок */
+      width: 140px;
+      height: 140px;
+      transform: translate(-50%, -50%) scale(0);
       background: 
-        radial-gradient(circle at 30% 30%, #ff9a9e 0%, transparent 50%),
-        radial-gradient(circle at 70% 30%, #fecfef 0%, transparent 50%),
-        radial-gradient(circle at 50% 70%, #fad0c4 0%, transparent 50%),
-        radial-gradient(circle at 20% 80%, #ffd1ff 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, #f8b500 0%, transparent 50%);
-      border-radius: 50% 40% 50% 40%;
+        radial-gradient(ellipse 40% 50% at 30% 20%, #ff6b9d 0%, transparent 70%),
+        radial-gradient(ellipse 40% 50% at 70% 20%, #feca57 0%, transparent 70%),
+        radial-gradient(ellipse 50% 60% at 50% 60%, #48dbfb 0%, transparent 70%),
+        radial-gradient(ellipse 30% 40% at 20% 80%, #ff9ff3 0%, transparent 70%),
+        radial-gradient(ellipse 30% 40% at 80% 80%, #54a0ff 0%, transparent 70%),
+        radial-gradient(circle 25% at 50% 50%, #fff 0%, #ffeaa7 100%);
+      border-radius: 60% 40% 50% 50%;
       opacity: 0;
-      transition: opacity 0.5s ease;
+      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       z-index: 5;
-      box-shadow: 0 0 20px rgba(255,182,193,0.8);
+      box-shadow: 
+        0 0 30px rgba(255,107,157,0.6),
+        inset 0 0 20px rgba(255,255,255,0.4);
     }
 
-    /* Если есть семецветик.jpg — раскомментируйте */
-    /*
-    #flower {
-      background-image: url("семецветик.jpg");
-      background-size: contain;
-      background-repeat: no-repeat;
-      box-shadow: none;
-    }
-    */
-
-    @keyframes spin {
-      from { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
-      to { transform: translate(-50%, -50%) rotate(360deg) scale(1.1); }
-    }
-
-    #flower.visible {
+    .flower.show {
       opacity: 1;
-      animation: spin 3s linear infinite;
+      transform: translate(-50%, -50%) scale(1) rotate(360deg);
+      animation: bloom 4s ease-in-out infinite;
     }
 
-    /* Уведомление об ошибках */
-    .error {
+    @keyframes bloom {
+      0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+      25% { transform: translate(-50%, -50%) scale(1.1) rotate(90deg); }
+      50% { transform: translate(-50%, -50%) scale(1.05) rotate(180deg); }
+      75% { transform: translate(-50%, -50%) scale(1.15) rotate(270deg); }
+    }
+
+    /* Частицы */
+    .particle {
       position: fixed;
-      top: 20px;
-      left: 20px;
-      background: #ff4444;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-      z-index: 100;
-      display: none;
+      width: 6px;
+      height: 6px;
+      background: #ff6b9d;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 3;
     }
   </style>
 </head>
 <body>
-  <div id="error" class="error"></div>
-  <button id="showFlower">🌸 Показать цветок</button>
-  <div id="flower"></div>
+  <div class="container">
+    <button class="btn" id="magicBtn">✨ Волшебный цветок ✨</button>
+  </div>
+  <div class="flower" id="flower"></div>
 
   <script>
-    (function() {
-      'use strict';
-      
-      const button = document.getElementById('showFlower');
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn = document.getElementById('magicBtn');
       const flower = document.getElementById('flower');
-      const errorDiv = document.getElementById('error');
       
-      if (!button || !flower) {
-        errorDiv.textContent = 'Ошибка: не найдены элементы кнопки или цветка';
-        errorDiv.style.display = 'block';
-        return;
-      }
-      
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+      btn.addEventListener('click', function() {
+        // Показать цветок
+        flower.classList.add('show');
         
-        flower.classList.add('visible');
+        // Скрыть кнопку
+        btn.style.opacity = '0';
+        btn.style.transform = 'scale(0.5)';
         
-        // Скрыть кнопку через 2 секунды
-        setTimeout(() => {
-          button.style.opacity = '0';
-          button.style.pointerEvents = 'none';
-        }, 2000);
+        // Создать частицы
+        createParticles();
         
-        console.log('Цветок показан!');
+        // Звук (опционально)
+        playMagicSound();
       });
       
-      // Проверка изображений
-      const imgTest = new Image();
-      imgTest.onerror = () => console.log('Изображения не найдены — используется fallback');
-      imgTest.src = 'семецветик.jpg';
+      function createParticles() {
+        for(let i = 0; i < 20; i++) {
+          setTimeout(() => {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = '50%';
+            particle.style.top = '50%';
+            particle.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
+            document.body.appendChild(particle);
+            
+            // Анимация частицы
+            particle.animate([
+              { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+              { transform: `translate(${ (Math.random()-0.5)*400 }px, ${ (Math.random()-0.5)*400 }px) scale(0)`, opacity: 0 }
+            ], {
+              duration: 2000 + Math.random()*1000,
+              easing: 'ease-out'
+            }).onfinish = () => particle.remove();
+          }, i * 50);
+        }
+      }
       
-    })();
+      function playMagicSound() {
+        // Web Audio API для магического звука
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.5);
+        
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1);
+        
+        oscillator.start(audioCtx.currentTime);
+        oscillator.stop(audioCtx.currentTime + 1);
+      }
+    });
   </script>
 </body>
 </html>
