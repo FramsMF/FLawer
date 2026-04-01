@@ -49,43 +49,34 @@
       transform: scale(0.98);
     }
 
-    .flower {
+    .flower-img {
       position: fixed;
       top: 50%;
       left: 50%;
-      width: 140px;
-      height: 140px;
+      width: 280px;
+      max-width: 80vw;
+      height: auto;
       transform: translate(-50%, -50%) scale(0);
-      background: 
-        radial-gradient(ellipse 40% 50% at 30% 20%, #ff6b9d 0%, transparent 70%),
-        radial-gradient(ellipse 40% 50% at 70% 20%, #feca57 0%, transparent 70%),
-        radial-gradient(ellipse 50% 60% at 50% 60%, #48dbfb 0%, transparent 70%),
-        radial-gradient(ellipse 30% 40% at 20% 80%, #ff9ff3 0%, transparent 70%),
-        radial-gradient(ellipse 30% 40% at 80% 80%, #54a0ff 0%, transparent 70%),
-        radial-gradient(circle 25% at 50% 50%, #fff 0%, #ffeaa7 100%);
-      border-radius: 60% 40% 50% 50%;
       opacity: 0;
       transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       z-index: 5;
-      box-shadow: 
-        0 0 30px rgba(255,107,157,0.6),
-        inset 0 0 20px rgba(255,255,255,0.4);
+      filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.45));
+      border-radius: 20px;
     }
 
-    .flower.show {
+    .flower-img.show {
       opacity: 1;
-      transform: translate(-50%, -50%) scale(1) rotate(360deg);
+      transform: translate(-50%, -50%) scale(1);
       animation: bloom 4s ease-in-out infinite;
     }
 
     @keyframes bloom {
-      0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-      25% { transform: translate(-50%, -50%) scale(1.1) rotate(90deg); }
-      50% { transform: translate(-50%, -50%) scale(1.05) rotate(180deg); }
-      75% { transform: translate(-50%, -50%) scale(1.15) rotate(270deg); }
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      25% { transform: translate(-50%, -50%) scale(1.05); }
+      50% { transform: translate(-50%, -50%) scale(1.02); }
+      75% { transform: translate(-50%, -50%) scale(1.08); }
     }
 
-    /* Частицы */
     .particle {
       position: fixed;
       width: 6px;
@@ -101,25 +92,19 @@
   <div class="container">
     <button class="btn" id="magicBtn">✨ Волшебный цветок ✨</button>
   </div>
-  <div class="flower" id="flower"></div>
+
+  <img src="./семецветик.jpg" alt="Цветок" class="flower-img" id="flowerImg">
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const btn = document.getElementById('magicBtn');
-      const flower = document.getElementById('flower');
+      const flowerImg = document.getElementById('flowerImg');
       
       btn.addEventListener('click', function() {
-        // Показать цветок
-        flower.classList.add('show');
-        
-        // Скрыть кнопку
+        flowerImg.classList.add('show');
         btn.style.opacity = '0';
         btn.style.transform = 'scale(0.5)';
-        
-        // Создать частицы
         createParticles();
-        
-        // Звук (опционально)
         playMagicSound();
       });
       
@@ -133,10 +118,9 @@
             particle.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
             document.body.appendChild(particle);
             
-            // Анимация частицы
             particle.animate([
               { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
-              { transform: `translate(${ (Math.random()-0.5)*400 }px, ${ (Math.random()-0.5)*400 }px) scale(0)`, opacity: 0 }
+              { transform: `translate(${(Math.random()-0.5)*400}px, ${(Math.random()-0.5)*400}px) scale(0)`, opacity: 0 }
             ], {
               duration: 2000 + Math.random()*1000,
               easing: 'ease-out'
@@ -146,8 +130,10 @@
       }
       
       function playMagicSound() {
-        // Web Audio API для магического звука
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        
+        const audioCtx = new AudioContextClass();
         const oscillator = audioCtx.createOscillator();
         const gainNode = audioCtx.createGain();
         
